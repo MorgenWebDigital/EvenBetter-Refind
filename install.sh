@@ -163,7 +163,8 @@ include themes/refind-theme-regular/theme.conf
 
 # Hide duplicate boot entries
 fold_linux_kernels true
-dont_scan_dirs EFI/ubuntu,EFI/boot,EFI/Microsoft/Boot" | tee -a "${refind_dir}"/refind.conf &> /dev/null
+dont_scan_dirs EFI/ubuntu,EFI/boot,EFI/Microsoft/Boot
+dont_scan_files grubx64.efi,shimx64.efi,mmx64.efi" | tee -a "${refind_dir}"/refind.conf &> /dev/null
 echo " - [DONE]"
 
 #Clean up - remove download
