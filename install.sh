@@ -155,11 +155,15 @@ case "$config_confirm" in
 esac
 echo " - [DONE]"
 
-#Edit refind.conf - add new theme
+#Edit refind.conf - add new theme and fix duplicate entries
 echo -n "Updating refind.conf"
 echo "
-# Load rEFInd theme Regular
-include themes/refind-theme-regular/theme.conf" | tee -a "${refind_dir}"/refind.conf &> /dev/null
+# Load EvenBetter rEFInd theme
+include themes/refind-theme-regular/theme.conf
+
+# Hide duplicate boot entries
+fold_linux_kernels true
+dont_scan_dirs EFI/ubuntu,EFI/boot,EFI/Microsoft/Boot" | tee -a "${refind_dir}"/refind.conf &> /dev/null
 echo " - [DONE]"
 
 #Clean up - remove download
