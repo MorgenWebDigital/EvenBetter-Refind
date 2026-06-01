@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-# An installer for refind-theme-regular by Munlik
+# An installer for EvenBetter rEFInd by MorgenWebDigital
 
 #Check if root
 [[ $EUID -ne 0 ]] && echo "This script must be run as root." && exit 1
@@ -16,10 +16,10 @@ then
 fi
 
 #Clone the theme
-theme_source_directory=$(mktemp -d -t refind-theme-regular-XXXXXX)
+theme_source_directory=$(mktemp -d -t evenbetter-refind-XXXXXX)
 cd "${theme_source_directory}"
-echo -n "Downloading rEFInd theme Regular to ${theme_source_directory}"
-git clone https://github.com/bobafetthotmail/refind-theme-regular.git &> /dev/null
+echo -n "Downloading EvenBetter rEFInd to ${theme_source_directory}"
+git clone https://github.com/MorgenWebDigital/EvenBetter-Refind.git &> /dev/null
 echo " - [DONE]"
 
 #Useful formatting tags
@@ -98,7 +98,7 @@ echo "Selected theme - ${bold}$theme_name${normal}"
 echo
 #Uncomment relevant lines from src/theme.conf
 echo -n "Generating theme file theme.conf"
-cd refind-theme-regular
+cd EvenBetter-Refind
 cp src/theme.conf theme.conf
 sed -i "s/#icons_dir themes\/refind-theme-regular\/icons\/$size_big-$size_small/icons_dir themes\/refind-theme-regular\/icons\/$size_big-$size_small/" theme.conf
 sed -i "s/#big_icon_size $size_big/big_icon_size $size_big/" theme.conf
@@ -111,8 +111,8 @@ echo " - [DONE]"
 
 #Clean up
 echo -n "Removing unused directories"
-rm -rf refind-theme-regular/{src,.git}
-rm -rf refind-theme-regular/install.sh
+rm -rf EvenBetter-Refind/{src,.git}
+rm -rf EvenBetter-Refind/install.sh
 echo " - [DONE]"
 
 #Remove previous installs
@@ -124,7 +124,7 @@ echo " - [DONE]"
 #Copy theme setup folders
 echo -n "Copying theme to ${refind_dir}/themes"
 mkdir -p "${refind_dir}/themes"
-cp -r refind-theme-regular "${refind_dir}/themes"
+cp -r EvenBetter-Refind "${refind_dir}/themes/refind-theme-regular"
 echo " - [DONE]"
 
 #Edit refind.conf - remove older themes
@@ -178,5 +178,5 @@ case "$del_confirm" in
         ;;
 esac
 
-echo "Thank you for installing rEFInd theme Regular."
+echo "Thank you for installing EvenBetter rEFInd."
 echo "NOTE: If you're not getting your full resolution or have color issues then try disabling the CSM in your UEFI settings."

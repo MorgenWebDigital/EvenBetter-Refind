@@ -1,16 +1,16 @@
-# rEFInd theme Regular
+# EvenBetter rEFInd
 
-A simplistic clean and minimal theme for [rEFInd](https://www.rodsbooks.com/refind/index.html)
+A simplistic clean and minimal theme for [rEFInd](https://www.rodsbooks.com/refind/index.html), with dark mode by default, pitch black background, and a clean glow effect on the selected OS.
 
-NOTE: this is a fork of [munlik's theme](https://github.com/munlik/refind-theme-regular) since he seems to have abandoned his project, he didn't answer to (my) PRs on github for years.
+NOTE: this is a fork of [bobafetthotmail/refind-theme-regular](https://github.com/bobafetthotmail/refind-theme-regular) with dark mode improvements and glow selection effects.
 
- **press F10 to take screenshot**
- 
-(default settings)
-![Screenshot 01](https://raw.githubusercontent.com/bobafetthotmail/refind-theme-regular/master/src/white_theme.png )
+**press F10 to take screenshot**
 
-(dark theme selected)
-![Screenshot 02](https://raw.githubusercontent.com/bobafetthotmail/refind-theme-regular/master/src/dark_theme.png)
+(dark theme - default)
+![Screenshot 01](https://raw.githubusercontent.com/MorgenWebDigital/EvenBetter-Refind/master/src/dark_theme.png)
+
+(light theme)
+![Screenshot 02](https://raw.githubusercontent.com/MorgenWebDigital/EvenBetter-Refind/master/src/white_theme.png)
 
 
 
@@ -18,7 +18,7 @@ NOTE: this is a fork of [munlik's theme](https://github.com/munlik/refind-theme-
 
 1. Just paste this command in your terminal and enter your choices.
    ```
-   sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/bobafetthotmail/refind-theme-regular/master/install.sh)"
+   sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/MorgenWebDigital/EvenBetter-Refind/master/install.sh)"
    ```
 2. To further adjust icon size, font size, background color and selector color edit `/boot/efi/EFI/refind/themes/refind-theme-regular/theme.conf` as root/SuperUser.
 
@@ -26,15 +26,15 @@ NOTE: this is a fork of [munlik's theme](https://github.com/munlik/refind-theme-
 
 1. Clone git repository to your `$HOME` directory.
    ```
-   git clone https://github.com/bobafetthotmail/refind-theme-regular.git
+   git clone https://github.com/MorgenWebDigital/EvenBetter-Refind.git
    ```
 
 2. Remove unused directories and files.
    ```
-   sudo rm -rf refind-theme-regular/{src,.git,.gitignore,.devcontainer}
+   sudo rm -rf EvenBetter-Refind/{src,.git,.gitignore,.devcontainer}
    ```
    ```
-   sudo rm refind-theme-regular/install.sh
+   sudo rm EvenBetter-Refind/install.sh
    ```
 
 3. Locate refind directory under EFI partition. For most Linux based system is commonly `/boot/efi/EFI/refind/`. Copy theme directory to it. Here, we will copy it to `themes` subdirectory inside refind.
@@ -49,7 +49,7 @@ NOTE: this is a fork of [munlik's theme](https://github.com/munlik/refind-theme-
    sudo mkdir -p /boot/efi/EFI/refind/themes
    ```
    ```
-   sudo cp -r refind-theme-regular /boot/efi/EFI/refind/themes/
+   sudo cp -r EvenBetter-Refind /boot/efi/EFI/refind/themes/refind-theme-regular
    ```
 
 4. To adjust icon size, font size, background color and selector color edit `theme.conf`.
@@ -60,7 +60,6 @@ NOTE: this is a fork of [munlik's theme](https://github.com/munlik/refind-theme-
 5. To enable the theme add `include themes/refind-theme-regular/theme.conf` at the end of `refind.conf`, and comment out or delete any other themes you might have installed.
    ```
    sudo vi /boot/efi/EFI/refind/refind.conf
-
    ```
 
 **NOTE**: If you're not getting your full resolution or having color issues, then try disabling the CSM in your UEFI settings.
@@ -71,7 +70,7 @@ NOTE: this is a fork of [munlik's theme](https://github.com/munlik/refind-theme-
 
 1. The icons must be in `svg` format to allow easy generation of icons at any scale. Canvas size must have width and height 128 px for OS icons, or 48 px for tool icons. The actual icon in the svg file should roughly fit in a square with a side of 96 px or 20 px (for OS and tool icons, respectively). Inkscape is a good program to create and work with svg files.
 
-2. Refind uses the file name to select the right icon, so icons for Linux OS must have the correct OS name from that distro's /etc/os-release file "ID" or ID_LIKE" entries, for example if ID=cachyos the icon name becomes os_cachyos.svg
+2. Refind uses the file name to select the right icon, so icons for Linux OS must have the correct OS name from that distro's /etc/os-release file "ID" or "ID_LIKE" entries, for example if ID=cachyos the icon name becomes os_cachyos.svg
 
 3. Copy the svg file in `/src/svg/big` or `/src/svg/small` (depending on what is more appropriate) and rename them to be consistent with others.
 
