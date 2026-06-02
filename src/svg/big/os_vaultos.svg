@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 120 120">
+  <title>Vault OS - Icon (Kreis, Lila)</title>
+  <circle cx="60" cy="60" r="57" fill="#56347C"></circle>
+  <g stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="#ffffff">
+    <line x1="60" y1="98" x2="60" y2="52"></line>
+    <line x1="60" y1="74" x2="40" y2="58"></line>
+    <line x1="60" y1="68" x2="80" y2="52"></line>
+  </g>
+  <circle cx="40" cy="58" r="8" fill="#ffffff"></circle>
+  <rect x="72" y="44" width="14" height="14" rx="2.5" fill="#ffffff"></rect>
+  <circle cx="60" cy="98" r="11" fill="#ffffff"></circle>
+  <circle cx="60" cy="32" r="15" fill="#ffffff"></circle>
+  <g fill="#56347C">
+    <circle cx="60" cy="29" r="5.5"></circle>
+    <path d="M56,30 L64,30 L65.5,40 L54.5,40 Z"></path>
+  </g>
+</svg>
