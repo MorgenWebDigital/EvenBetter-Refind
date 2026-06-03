@@ -155,6 +155,20 @@ case "$config_confirm" in
 esac
 echo " - [DONE]"
 
+#Edit refind.conf - comment out built-in example menuentries
+echo -n "Commenting out example menuentries from refind.conf"
+sed --in-place \
+    -e '/^menuentry Linux {/,/^}/s/^/#/' \
+    -e '/^menuentry "Arch Linux" {/,/^}/s/^/#/' \
+    -e '/^menuentry Ubuntu {/,/^}/s/^/#/' \
+    -e '/^menuentry "ELILO" {/,/^}/s/^/#/' \
+    -e '/^menuentry "Windows 7" {/,/^}/s/^/#/' \
+    -e '/^menuentry "Windows via shell script" {/,/^}/s/^/#/' \
+    -e '/^menuentry "My macOS" {/,/^}/s/^/#/' \
+    -e '/^menuentry "macOS via BootNext" {/,/^}/s/^/#/' \
+    "${refind_dir}"/refind.conf
+echo " - [DONE]"
+
 #Edit refind.conf - remove all previous EvenBetter-Refind entries to avoid duplicates on reinstall
 echo -n "Cleaning previous EvenBetter rEFInd entries from refind.conf"
 sed --in-place '/# Load EvenBetter rEFInd theme/,/^$/d' "${refind_dir}"/refind.conf
