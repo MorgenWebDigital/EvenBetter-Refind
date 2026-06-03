@@ -175,12 +175,12 @@ sed --in-place '/# Load EvenBetter rEFInd theme/,/^$/d' "${refind_dir}"/refind.c
 sed --in-place '/fold_linux_kernels/d' "${refind_dir}"/refind.conf
 sed --in-place '/dont_scan_files grubx64/d' "${refind_dir}"/refind.conf
 sed --in-place '/dont_scan_dirs EFI\/boot/d' "${refind_dir}"/refind.conf
-sed --in-place '/scanfor external/d' "${refind_dir}"/refind.conf
+sed --in-place '/^scanfor external/d' "${refind_dir}"/refind.conf
 echo " - [DONE]"
 
 #Edit refind.conf - fix scanfor to enable external (USB) devices
 echo -n "Patching refind.conf scanfor"
-sed --in-place 's/^\s*scanfor\s.*/scanfor external,optical,manual/' "${refind_dir}"/refind.conf
+sed --in-place 's/^#\?\s*scanfor\s.*/scanfor external,optical,manual/' "${refind_dir}"/refind.conf
 echo " - [DONE]"
 
 #Edit refind.conf - add new theme and fix duplicate entries
