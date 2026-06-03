@@ -158,7 +158,7 @@ echo " - [DONE]"
 #Edit refind.conf - fix scanfor to include external (USB) devices
 echo -n "Patching refind.conf scanfor and dont_scan_files"
 sed --in-place \
-    -e 's/^\s*scanfor\s.*/scanfor internal,external,optical,manual/' \
+    -e 's/^\s*scanfor\s.*/scanfor external,optical,manual/' \
     -e 's/dont_scan_files\s\+\(.*\)bootx64\.efi,\(.*\)/dont_scan_files \1\2/' \
     -e 's/dont_scan_files\s\+\(.*\),bootx64\.efi\(.*\)/dont_scan_files \1\2/' \
     "${refind_dir}"/refind.conf
