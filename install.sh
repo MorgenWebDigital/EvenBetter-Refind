@@ -172,7 +172,14 @@ include themes/refind-theme-regular/theme.conf
 
 # Hide duplicate boot entries
 fold_linux_kernels true
-dont_scan_files grubx64.efi,shimx64.efi,mmx64.efi,fbx64.efi" | tee -a "${refind_dir}"/refind.conf &> /dev/null
+dont_scan_files grubx64.efi,shimx64.efi,mmx64.efi,fbx64.efi
+
+# VaultOS Live USB
+menuentry \"VaultOS\" {
+    icon     /EFI/refind/themes/refind-theme-regular/icons/128-48/os_vaultos.png
+    volume   VAULTOS
+    loader   /efi/boot/bootx64.efi
+}" | tee -a "${refind_dir}"/refind.conf &> /dev/null
 echo " - [DONE]"
 
 #Clean up - remove download
