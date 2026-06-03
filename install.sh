@@ -155,6 +155,15 @@ case "$config_confirm" in
 esac
 echo " - [DONE]"
 
+#Edit refind.conf - fix scanfor to include external (USB) devices
+echo -n "Patching refind.conf scanfor and dont_scan_files"
+sed --in-place \
+    -e 's/^\s*scanfor\s.*/scanfor internal,external,optical,manual/' \
+    -e 's/dont_scan_files\s\+\(.*\)bootx64\.efi,\(.*\)/dont_scan_files \1\2/' \
+    -e 's/dont_scan_files\s\+\(.*\),bootx64\.efi\(.*\)/dont_scan_files \1\2/' \
+    "${refind_dir}"/refind.conf
+echo " - [DONE]"
+
 #Edit refind.conf - add new theme and fix duplicate entries
 echo -n "Updating refind.conf"
 echo "
@@ -163,7 +172,7 @@ include themes/refind-theme-regular/theme.conf
 
 # Hide duplicate boot entries
 fold_linux_kernels true
-dont_scan_files grubx64.efi,shimx64.efi,mmx64.efi,bootx64.efi,fbx64.efi" | tee -a "${refind_dir}"/refind.conf &> /dev/null
+dont_scan_files grubx64.efi,shimx64.efi,mmx64.efi,fbx64.efi" | tee -a "${refind_dir}"/refind.conf &> /dev/null
 echo " - [DONE]"
 
 #Clean up - remove download
