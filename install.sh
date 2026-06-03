@@ -155,25 +155,22 @@ case "$config_confirm" in
 esac
 echo " - [DONE]"
 
-#Edit refind.conf - fix scanfor to include external (USB) devices
-echo -n "Patching refind.conf scanfor and dont_scan_files"
-sed --in-place \
-    -e 's/^\s*scanfor\s.*/scanfor external,optical,manual/' \
-    -e 's/dont_scan_files\s\+\(.*\)bootx64\.efi,\(.*\)/dont_scan_files \1\2/' \
-    -e 's/dont_scan_files\s\+\(.*\),bootx64\.efi\(.*\)/dont_scan_files \1\2/' \
-    "${refind_dir}"/refind.conf
+#Edit refind.conf - remove all previous EvenBetter-Refind entries to avoid duplicates on reinstall
+echo -n "Cleaning previous EvenBetter rEFInd entries from refind.conf"
+sed --in-place '/# Load EvenBetter rEFInd theme/,/^$/d' "${refind_dir}"/refind.conf
+sed --in-place '/fold_linux_kernels/d' "${refind_dir}"/refind.conf
+sed --in-place '/dont_scan_files grubx64/d' "${refind_dir}"/refind.conf
+sed --in-place '/scanfor external/d' "${refind_dir}"/refind.conf
+echo " - [DONE]"
+
+#Edit refind.conf - fix scanfor to enable external (USB) devices
+echo -n "Patching refind.conf scanfor"
+sed --in-place 's/^\s*scanfor\s.*/scanfor external,optical,manual/' "${refind_dir}"/refind.conf
 echo " - [DONE]"
 
 #Edit refind.conf - add new theme and fix duplicate entries
 echo -n "Updating refind.conf"
-echo "
-# Load EvenBetter rEFInd theme
-include themes/refind-theme-regular/theme.conf
-
-# Hide duplicate boot entries
-fold_linux_kernels true
-dont_scan_files grubx64.efi,shimx64.efi,mmx64.efi,fbx64.efi
-" | tee -a "${refind_dir}"/refind.conf &> /dev/null
+printf '\n# Load EvenBetter rEFInd theme\ninclude themes/refind-theme-regular/theme.conf\n\n# Hide duplicate boot entries\nfold_linux_kernels true\ndont_scan_files grubx64.efi,shimx64.efi,mmx64.efi,fbx64.efi\n' | tee -a "${refind_dir}"/refind.conf &> /dev/null
 echo " - [DONE]"
 
 #Clean up - remove download
