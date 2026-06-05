@@ -199,7 +199,7 @@ echo " - [DONE]"
 
 #Edit refind.conf - add new theme and fix duplicate entries
 echo -n "Updating refind.conf"
-printf '\n# Load EvenBetter rEFInd theme\ninclude themes/refind-theme-regular/theme.conf\n\n# Hide duplicate boot entries\nfold_linux_kernels true\ndont_scan_files mmx64.efi,fbx64.efi,bootx64.efi\ndont_scan_dirs EFI/boot\n\n# Auto-scan /live on external volumes (VaultOS)\nalso_scan_dirs +/live\nscan_all_linux_kernels true\n' | tee -a "${refind_dir}"/refind.conf &> /dev/null
+printf '\n# Load EvenBetter rEFInd theme\ninclude themes/refind-theme-regular/theme.conf\n\n# Hide duplicate boot entries\nfold_linux_kernels true\ndont_scan_files shimx64.efi,mmx64.efi,fbx64.efi,bootx64.efi\ndont_scan_dirs EFI/boot\n\n# Auto-scan /live on external volumes (VaultOS)\nalso_scan_dirs +/live\nscan_all_linux_kernels true\n' | tee -a "${refind_dir}"/refind.conf &> /dev/null
 echo " - [DONE]"
 
 #Clean up - remove download
