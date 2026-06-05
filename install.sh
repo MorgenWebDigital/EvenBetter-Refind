@@ -190,6 +190,10 @@ sed --in-place '/dont_scan_dirs EFI\/boot/d' "${refind_dir}"/refind.conf
 sed --in-place '/also_scan_dirs/d' "${refind_dir}"/refind.conf
 sed --in-place '/scan_all_linux_kernels/d' "${refind_dir}"/refind.conf
 sed --in-place '/^scanfor /d' "${refind_dir}"/refind.conf
+# Remove leftover manual menuentry blocks from previous installs
+sed --in-place '/^menuentry "Ubuntu" {/,/^}/d' "${refind_dir}"/refind.conf
+sed --in-place '/^menuentry "Windows" {/,/^}/d' "${refind_dir}"/refind.conf
+sed --in-place '/^menuentry "VaultOS" {/,/^}/d' "${refind_dir}"/refind.conf
 echo " - [DONE]"
 
 #Edit refind.conf - patch scanfor to enable all scan types
