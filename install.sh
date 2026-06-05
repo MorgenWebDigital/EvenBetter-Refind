@@ -129,13 +129,16 @@ echo " - [DONE]"
 
 #Install ISO9660 driver for booting Live-ISOs and USB sticks
 echo -n "Installing ISO9660 driver"
-mkdir -p "${refind_dir}/drivers_x64" || { echo " - [FAILED: could not create drivers_x64 dir]"; }
-driver_src=$(find /usr/share/refind /usr/lib/refind -name "iso9660_x64.efi" 2>/dev/null | head -1)
-if [ -n "$driver_src" ]; then
-    cp "$driver_src" "${refind_dir}/drivers_x64/iso9660_x64.efi" && echo " - [DONE]" || echo " - [FAILED: cp error]"
-else
-    echo " - [SKIPPED: iso9660_x64.efi not found]"
-fi
+(
+    set +e
+    mkdir -p "${refind_dir}/drivers_x64"
+    driver_src=$(find /usr/share/refind /usr/lib/refind -name "iso9660_x64.efi" 2>/dev/null | head -1)
+    if [ -n "$driver_src" ]; then
+        cp "$driver_src" "${refind_dir}/drivers_x64/iso9660_x64.efi" && echo " - [DONE]" || echo " - [FAILED: cp error]"
+    else
+        echo " - [SKIPPED: iso9660_x64.efi not found]"
+    fi
+)
 
 #Edit refind.conf - remove older themes
 echo -n "Removing old themes from refind.conf"
