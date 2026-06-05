@@ -127,6 +127,27 @@ mkdir -p "${refind_dir}/themes"
 cp -r EvenBetter-Refind "${refind_dir}/themes/refind-theme-regular"
 echo " - [DONE]"
 
+#Install ISO9660 driver for booting Live-ISOs and USB sticks
+echo -n "Installing ISO9660 driver"
+mkdir -p "${refind_dir}/drivers_x64"
+if ! command -v curl &> /dev/null; then
+    echo " - [SKIPPED: curl not found]"
+else
+    refind_ver=$(refind-install --version 2>/dev/null | grep -oP '\d+\.\d+\.\d+' | head -1)
+    if [ -z "$refind_ver" ]; then
+        refind_ver=$(dpkg -s refind 2>/dev/null | grep Version | grep -oP '\d+\.\d+\.\d+' | head -1)
+    fi
+    if [ -n "$refind_ver" ]; then
+        curl -fsSL "https://sourceforge.net/projects/refind/files/${refind_ver}/refind-bin-${refind_ver}.zip/download" -o /tmp/refind-bin.zip &> /dev/null \
+        && unzip -j /tmp/refind-bin.zip "refind-bin-${refind_ver}/drivers_x64/iso9660_x64.efi" -d "${refind_dir}/drivers_x64/" &> /dev/null \
+        && rm /tmp/refind-bin.zip \
+        && echo " - [DONE]" \
+        || echo " - [FAILED: could not download driver]"
+    else
+        echo " - [SKIPPED: could not detect rEFInd version]"
+    fi
+fi
+
 #Edit refind.conf - remove older themes
 echo -n "Removing old themes from refind.conf"
 echo
@@ -172,6 +193,7 @@ echo " - [DONE]"
 #Edit refind.conf - remove all previous EvenBetter-Refind entries to avoid duplicates on reinstall
 echo -n "Cleaning previous EvenBetter rEFInd entries from refind.conf"
 sed --in-place '/# Load EvenBetter rEFInd theme/,/^$/d' "${refind_dir}"/refind.conf
+sed --in-place '/# VaultOS Live USB/,/^}/d' "${refind_dir}"/refind.conf
 sed --in-place '/fold_linux_kernels/d' "${refind_dir}"/refind.conf
 sed --in-place '/dont_scan_files grubx64/d' "${refind_dir}"/refind.conf
 sed --in-place '/dont_scan_dirs EFI\/boot/d' "${refind_dir}"/refind.conf
@@ -185,7 +207,7 @@ echo " - [DONE]"
 
 #Edit refind.conf - add new theme and fix duplicate entries
 echo -n "Updating refind.conf"
-printf '\n# Load EvenBetter rEFInd theme\ninclude themes/refind-theme-regular/theme.conf\n\n# Hide duplicate boot entries\nfold_linux_kernels true\ndont_scan_files grubx64.efi,shimx64.efi,mmx64.efi,fbx64.efi,bootx64.efi\ndont_scan_dirs EFI/boot\n' | tee -a "${refind_dir}"/refind.conf &> /dev/null
+printf '\n# Load EvenBetter rEFInd theme\ninclude themes/refind-theme-regular/theme.conf\n\n# Hide duplicate boot entries\nfold_linux_kernels true\ndont_scan_files grubx64.efi,shimx64.efi,mmx64.efi,fbx64.efi,bootx64.efi\ndont_scan_dirs EFI/boot\n\n# VaultOS Live USB\nmenuentry "VaultOS" {\n    icon    /EFI/refind/themes/refind-theme-regular/icons/128-48/os_vaultos.png\n    volume  VAULTOS\n    loader  /live/vmlinuz\n    initrd  /live/initrd.img\n    options "boot=live components quiet splash init_on_alloc=1 init_on_free=1"\n}\n' | tee -a "${refind_dir}"/refind.conf &> /dev/null
 echo " - [DONE]"
 
 #Clean up - remove download
