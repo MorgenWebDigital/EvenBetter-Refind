@@ -130,22 +130,12 @@ echo " - [DONE]"
 #Install ISO9660 driver for booting Live-ISOs and USB sticks
 echo -n "Installing ISO9660 driver"
 mkdir -p "${refind_dir}/drivers_x64"
-if ! command -v curl &> /dev/null; then
-    echo " - [SKIPPED: curl not found]"
+driver_src=$(find /usr/share/refind /usr/lib/refind -name "iso9660_x64.efi" 2>/dev/null | head -1)
+if [ -n "$driver_src" ]; then
+    cp "$driver_src" "${refind_dir}/drivers_x64/iso9660_x64.efi"
+    echo " - [DONE]"
 else
-    refind_ver=$(refind-install --version 2>/dev/null | grep -oP '\d+\.\d+\.\d+' | head -1)
-    if [ -z "$refind_ver" ]; then
-        refind_ver=$(dpkg -s refind 2>/dev/null | grep Version | grep -oP '\d+\.\d+\.\d+' | head -1)
-    fi
-    if [ -n "$refind_ver" ]; then
-        curl -fsSL "https://sourceforge.net/projects/refind/files/${refind_ver}/refind-bin-${refind_ver}.zip/download" -o /tmp/refind-bin.zip &> /dev/null \
-        && unzip -j /tmp/refind-bin.zip "refind-bin-${refind_ver}/drivers_x64/iso9660_x64.efi" -d "${refind_dir}/drivers_x64/" &> /dev/null \
-        && rm /tmp/refind-bin.zip \
-        && echo " - [DONE]" \
-        || echo " - [FAILED: could not download driver]"
-    else
-        echo " - [SKIPPED: could not detect rEFInd version]"
-    fi
+    echo " - [SKIPPED: iso9660_x64.efi not found in refind package]"
 fi
 
 #Edit refind.conf - remove older themes
