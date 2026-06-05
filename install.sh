@@ -184,21 +184,22 @@ echo " - [DONE]"
 #Edit refind.conf - remove all previous EvenBetter-Refind entries to avoid duplicates on reinstall
 echo -n "Cleaning previous EvenBetter rEFInd entries from refind.conf"
 sed --in-place '/# Load EvenBetter rEFInd theme/,/^$/d' "${refind_dir}"/refind.conf
-sed --in-place '/# VaultOS Live USB/,/^}/d' "${refind_dir}"/refind.conf
 sed --in-place '/fold_linux_kernels/d' "${refind_dir}"/refind.conf
 sed --in-place '/dont_scan_files grubx64/d' "${refind_dir}"/refind.conf
 sed --in-place '/dont_scan_dirs EFI\/boot/d' "${refind_dir}"/refind.conf
-sed --in-place '/^scanfor external/d' "${refind_dir}"/refind.conf
+sed --in-place '/also_scan_dirs/d' "${refind_dir}"/refind.conf
+sed --in-place '/scan_all_linux_kernels/d' "${refind_dir}"/refind.conf
+sed --in-place '/^scanfor /d' "${refind_dir}"/refind.conf
 echo " - [DONE]"
 
-#Edit refind.conf - fix scanfor to enable external (USB) devices
+#Edit refind.conf - patch scanfor to enable all scan types
 echo -n "Patching refind.conf scanfor"
-sed --in-place 's/^#\?\s*scanfor\s.*/scanfor external,optical,manual/' "${refind_dir}"/refind.conf
+sed --in-place 's/^#\?\s*scanfor\s.*/scanfor manual,external,internal,optical/' "${refind_dir}"/refind.conf
 echo " - [DONE]"
 
 #Edit refind.conf - add new theme and fix duplicate entries
 echo -n "Updating refind.conf"
-printf '\n# Load EvenBetter rEFInd theme\ninclude themes/refind-theme-regular/theme.conf\n\n# Hide duplicate boot entries\nfold_linux_kernels true\ndont_scan_files grubx64.efi,shimx64.efi,mmx64.efi,fbx64.efi,bootx64.efi\ndont_scan_dirs EFI/boot\n\n# VaultOS Live USB\nmenuentry "VaultOS" {\n    icon    /EFI/refind/themes/refind-theme-regular/icons/128-48/os_vaultos.png\n    volume  VAULTOS\n    loader  /live/vmlinuz\n    initrd  /live/initrd.img\n    options "boot=live components quiet splash init_on_alloc=1 init_on_free=1"\n}\n' | tee -a "${refind_dir}"/refind.conf &> /dev/null
+printf '\n# Load EvenBetter rEFInd theme\ninclude themes/refind-theme-regular/theme.conf\n\n# Hide duplicate boot entries\nfold_linux_kernels true\ndont_scan_files grubx64.efi,shimx64.efi,mmx64.efi,fbx64.efi,bootx64.efi\ndont_scan_dirs EFI/boot\n\n# Auto-scan /live on external volumes (VaultOS)\nalso_scan_dirs +/live\nscan_all_linux_kernels true\n' | tee -a "${refind_dir}"/refind.conf &> /dev/null
 echo " - [DONE]"
 
 #Clean up - remove download
