@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 set -euo pipefail
-set -x
 # An installer for EvenBetter rEFInd by MorgenWebDigital
 
 #Check if root
@@ -130,16 +129,15 @@ echo " - [DONE]"
 
 #Install ISO9660 driver for booting Live-ISOs and USB sticks
 echo -n "Installing ISO9660 driver"
-(
-    set +e
-    mkdir -p "${refind_dir}/drivers_x64"
-    driver_src=$(find /usr/share/refind /usr/lib/refind -name "iso9660_x64.efi" 2>/dev/null | head -1)
-    if [ -n "$driver_src" ]; then
-        cp "$driver_src" "${refind_dir}/drivers_x64/iso9660_x64.efi" && echo " - [DONE]" || echo " - [FAILED: cp error]"
-    else
-        echo " - [SKIPPED: iso9660_x64.efi not found]"
-    fi
-)
+mkdir -p "${refind_dir}/drivers_x64"
+driver_src=""
+driver_src=$(find /usr/share/refind -name "iso9660_x64.efi" 2>/dev/null | head -1) || true
+if [ -n "$driver_src" ]; then
+    cp "$driver_src" "${refind_dir}/drivers_x64/iso9660_x64.efi"
+    echo " - [DONE]"
+else
+    echo " - [SKIPPED: iso9660_x64.efi not found]"
+fi
 
 #Edit refind.conf - remove older themes
 echo -n "Removing old themes from refind.conf"
