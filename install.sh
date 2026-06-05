@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+set -x
 # An installer for EvenBetter rEFInd by MorgenWebDigital
 
 #Check if root
