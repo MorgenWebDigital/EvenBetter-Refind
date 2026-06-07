@@ -198,7 +198,11 @@ echo " - [DONE]"
 
 #Edit refind.conf - patch scanfor to enable all scan types
 echo -n "Patching refind.conf scanfor"
-sed --in-place 's/^#\?\s*scanfor\s.*/scanfor manual,external,internal,optical/' "${refind_dir}"/refind.conf
+if grep -q '^\s*#\?\s*scanfor' "${refind_dir}"/refind.conf; then
+    sed --in-place 's/^#\?\s*scanfor\s.*/scanfor manual,external,internal,optical/' "${refind_dir}"/refind.conf
+else
+    echo "scanfor manual,external,internal,optical" >> "${refind_dir}"/refind.conf
+fi
 echo " - [DONE]"
 
 #Edit refind.conf - add new theme and fix duplicate entries
